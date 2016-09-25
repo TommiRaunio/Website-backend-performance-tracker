@@ -1,0 +1,4 @@
+﻿{
+  "elasticSearchNodeAddress": "http://localhost:9200",
+  "indexName":  "performance-tracker"
+}
