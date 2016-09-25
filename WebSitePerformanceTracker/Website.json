@@ -1,0 +1,9 @@
+﻿{
+  "siteurl": "http://www.google.fi",
+  "pages": [
+    {
+      "name": "Home",
+      "url": "/"
+    }
+  ]
+}
