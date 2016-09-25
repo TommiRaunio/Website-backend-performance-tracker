@@ -22,6 +22,5 @@ namespace WebsitePerformanceTracker.Elasticsearch
         public DateTime Timestamp { get; set; }
 
         public int HtmlSize { get; set; }
-
     }
 }
