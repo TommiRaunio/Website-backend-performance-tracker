@@ -15,6 +15,7 @@ namespace WebsitePerformanceTracker.WebsiteTester
     {
         private readonly IElasticClient _elasticClient;
         private const int RepeatCount = 10;
+        private const int PauseDuration = 300;
 
         public Tracker(IElasticClient elasticClient)
         {
@@ -23,6 +24,8 @@ namespace WebsitePerformanceTracker.WebsiteTester
 
         public void Track(SiteConfigurationJson siteConfiguration)
         {
+            Console.WriteLine($"Doing {RepeatCount} requests with {PauseDuration}ms pause in between");
+
             Parallel.ForEach(siteConfiguration.pages, (webPage) =>
             {
                 var url = GetPageUrl(webPage.url, siteConfiguration.siteurl);
@@ -34,18 +37,17 @@ namespace WebsitePerformanceTracker.WebsiteTester
         private void MeasureWebpage(string name, string url)
         {
             var webClient = new WebClient();
-            webClient.Headers.Add("Accept-Encoding: gzip, deflate, sdch, br");
 
             var ticks = new List<long>();
-            string dom = "";
+            var dom = "";
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < RepeatCount; i++)
             {
                 var watch = Stopwatch.StartNew();
                 dom = webClient.DownloadString(url);
                 watch.Stop();
                 ticks.Add(watch.Elapsed.Ticks);
-                Thread.Sleep(300);
+                Thread.Sleep(PauseDuration);
             }
 
             var averageTicks = (long)ticks.Average();

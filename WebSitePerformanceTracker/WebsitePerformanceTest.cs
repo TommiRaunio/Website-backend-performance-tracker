@@ -18,8 +18,8 @@ namespace WebsitePerformanceTracker
             var siteConfiguration = configurationProvider.ProvideSiteConfiguration();
             var elasticConfiguration = configurationProvider.ProvideElasticSearchConfiguration();
 
-            var elasticProvider = new ElasticSearchClientProvider(elasticConfiguration);
-            var elasticClient = elasticProvider.GetElasticClient();
+            var elasticProvider = new ElasticSearchClientProvider();
+            var elasticClient = elasticProvider.GetElasticClient(elasticConfiguration);
 
             var tracker = new Tracker(elasticClient);
             tracker.Track(siteConfiguration);

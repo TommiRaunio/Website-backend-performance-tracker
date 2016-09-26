@@ -9,21 +9,17 @@ namespace WebsitePerformanceTracker.Elasticsearch
 {
     class ElasticSearchClientProvider
     {
-        private ElasticSearchConfigurationJson _configuration;
 
-        public ElasticSearchClientProvider(ElasticSearchConfigurationJson configuration)
+        public IElasticClient GetElasticClient(ElasticSearchConfigurationJson configuration)
         {
-            _configuration = configuration;
-        }
-
-        public IElasticClient GetElasticClient()
-        {
-            var local = new Uri(_configuration.elasticSearchNodeAddress);
-            var settings = new ConnectionSettings(local).DefaultIndex(_configuration.indexName);
+            var local = new Uri(configuration.elasticSearchNodeAddress);
+            var settings = new ConnectionSettings(local).DefaultIndex(configuration.indexName);
             var elastic = new ElasticClient(settings);
 
-            elastic.CreateIndex(_configuration.indexName);
+            elastic.CreateIndex(configuration.indexName);
             elastic.Map<TrackerStatistics>(m => m.AutoMap());
+
+            Console.WriteLine($"Elasticsearch instance {configuration.elasticSearchNodeAddress}. Index is {configuration.indexName}");
 
             return elastic;
         }
